@@ -1,12 +1,9 @@
 from datetime import datetime
-from typing import List, Dict, Any
+from typing import Dict, Any
 from app.db.models import get_db_connection
 
 
 def insert_message(data: Dict[str, Any]) -> bool:
-    """
-    Returns True if inserted, False if duplicate
-    """
     conn = get_db_connection()
     cursor = conn.cursor()
 
@@ -34,7 +31,7 @@ def insert_message(data: Dict[str, Any]) -> bool:
         conn.close()
 
 
-def fetch_messages(limit: int, offset: int, from_msisdn=None, since=None, q=None):
+def fetch_messages(limit, offset, from_msisdn=None, since=None, q=None):
     conn = get_db_connection()
     cursor = conn.cursor()
 
@@ -85,11 +82,13 @@ def fetch_stats():
     conn = get_db_connection()
     cursor = conn.cursor()
 
-    total = cursor.execute("SELECT COUNT(*) FROM messages").fetchone()[0]
+    total = cursor.execute(
+        "SELECT COUNT(*) FROM messages"
+    ).fetchone()[0]
 
     senders = cursor.execute(
         """
-        SELECT from_msisdn as sender, COUNT(*) as count
+        SELECT from_msisdn AS sender, COUNT(*) AS count
         FROM messages
         GROUP BY from_msisdn
         ORDER BY count DESC
@@ -111,7 +110,8 @@ def fetch_stats():
         "total_messages": total,
         "senders_count": len(senders),
         "messages_per_sender": [
-            {"from": row["sender"], "count": row["count"]} for row in senders
+            {"from": row["sender"], "count": row["count"]}
+            for row in senders
         ],
         "first_message_ts": first_ts,
         "last_message_ts": last_ts,

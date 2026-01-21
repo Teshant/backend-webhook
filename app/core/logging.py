@@ -25,3 +25,4 @@ async def log_request(request: Request, call_next):
 
     print(json.dumps(log))
     return response
+

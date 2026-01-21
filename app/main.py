@@ -7,10 +7,7 @@ from app.core.config import settings
 from app.db.models import init_db
 from app.db.storage import insert_message, fetch_messages, fetch_stats
 from app.core.logging import log_request
-from app.core.metrics import (
-    http_requests_total,
-    webhook_requests_total,
-)
+from app.core.metrics import webhook_requests_total
 
 app = FastAPI()
 app.middleware("http")(log_request)
@@ -75,3 +72,4 @@ def stats():
 def metrics():
     from prometheus_client import generate_latest
     return generate_latest()
+

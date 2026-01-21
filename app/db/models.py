@@ -28,3 +28,4 @@ def init_db() -> None:
 
     conn.commit()
     conn.close()
+
