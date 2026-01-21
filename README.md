@@ -1,18 +1,32 @@
-# Lyftr Backend Assignment
+# Backend Webhook Service
 
-This repository contains a Dockerized FastAPI backend service built as part of the Lyftr backend assignment.
+This is a Dockerized FastAPI backend service.
 
-The service ingests webhook events, stores them in SQLite with idempotency guarantees, and exposes APIs for querying messages, statistics, health checks, and metrics.
+It:
+- Receives webhook events
+- Verifies webhook signatures using HMAC
+- Stores data in SQLite with idempotency
+- Exposes APIs for messages, stats, health, and metrics
 
 ---
 
 ## 🚀 How to Run
 
-### Prerequisites
-- Docker Desktop (Linux containers)
-- Docker Compose v2+
+### Requirements
+- Docker Desktop
+- Docker Compose
 
-### Steps
+---
 
-```bash
-docker compose up -d --build
+## ⚠️ REQUIRED CONFIGURATION (READ THIS)
+
+Before running the service, you **MUST** create a `.env` file.
+
+### `.env` file (REQUIRED)
+
+Create a file named `.env` in the project root with **EXACTLY** these variables:
+
+```env
+WEBHOOK_SECRET=your_own_secret_value
+DATABASE_URL=sqlite:////data/app.db
+
